@@ -1,11 +1,12 @@
 <?php
 namespace App\Lib;
 
+use App\Lib\Router;
+
 class App{
 
 	public function run(){
 		//$this->enableSystemLogs();
-		$this->includeRouters();
 		$this->handleRequest();
 	}
 
@@ -24,7 +25,17 @@ class App{
 		Logger::enableSystemLogs();
 	}
 
-	public function handleRequest(){
+	public function to404Error(){
+		http_response_code(404);
+        header('Content-Type: application/json');
+        echo json_encode(['error'=>'Not found']);
+		die();
+	}
 
+	public function handleRequest(){
+		$this->includeRouters();
+
+		//If not math router emit 404
+		$this->to404Error();
 	}
 }

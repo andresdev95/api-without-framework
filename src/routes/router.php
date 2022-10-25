@@ -1,21 +1,20 @@
 <?php
 
 use App\Lib\Router;
-use App\Lib\Request;
-use App\Lib\Response;
 
-Router::get('/', function ($req, $res) {
-    //dump($req, $res);
-    echo 'Hello World';
-});
+Router::get('/', function () { echo 'Hello World'; });
 
-Router::get('/post', function (Request $req, Response $res) {
-    $res->toJSON([]);
-});
+Router::get('/home', 'HomeController@indexAction');
+Router::get('/home2', 'HomeController@indexAction2');
 
-Router::get('/post/([0-9]*)', function (Request $req, Response $res) {
-    $res->toJSON([
-        'post' =>  ['id' => $req->params[0]],
-        'status' => 'ok'
+Router::get('/post', 'HomeController@post');
+
+Router::get('/post/([0-9]*)', 'HomeController@getOne');
+Router::get('/post/([0-9]*)/edit', function ($id) {
+
+    echo json_encode([
+        'post' =>  ['id' => $id],
+        'edit' => 'ok'
     ]);
+
 });

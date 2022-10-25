@@ -10,6 +10,7 @@ class Config
 		return !empty(self::$config[$key]) ? self::$config[$key] : $default;
 	}
 
+	// Singlenton 
 	public static function load(){
 		if(is_null(self::$config)){
 			self::$config = require base_path('src/config/config.php');

@@ -32,11 +32,21 @@ class Router
         if (self::$is_match) {
             // first value is normally the route, lets remove it
             array_shift($matches);
+            
             // Get the matches as parameters
-            $params = array_map(function ($param) {
-                return $param[0];
-            }, $matches);
-            $callback(new Request($params), new Response());
+            $params = array_map(function ($param) { return $param[0]; }, $matches);
+
+            if(is_string($callback)){
+                list($controller, $action) = explode('@', $callback, 2);
+                $controller = 'App\\Controller\\' . $controller;
+                $d = new $controller;
+                call_user_func_array(array($d, $action), $params);
+                //(new $controller)->$action();
+            }else{
+                call_user_func_array($callback, $params);
+                //$callback(new Request($params), new Response());
+            }
+            die();
         }
     }
 }
